@@ -795,6 +795,7 @@ export interface ApiJobJob extends Schema.CollectionType {
     singularName: 'job';
     pluralName: 'jobs';
     displayName: 'Job';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -818,6 +819,9 @@ export interface ApiJobJob extends Schema.CollectionType {
       'api::job.job',
       'manyToOne',
       'api::category.category'
+    >;
+    location: Attribute.Enumeration<
+      ['Bath', 'Birmingham', 'London', 'Durham', 'Winchester']
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
