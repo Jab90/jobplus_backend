@@ -661,6 +661,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     firstName: Attribute.String & Attribute.Required;
     lastName: Attribute.String & Attribute.Required;
+    applied_jobs: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::applied-job.applied-job'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -671,6 +676,44 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::users-permissions.user',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiAppliedJobAppliedJob extends Schema.CollectionType {
+  collectionName: 'applied_jobs';
+  info: {
+    singularName: 'applied-job';
+    pluralName: 'applied-jobs';
+    displayName: 'Applied Job';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::applied-job.applied-job',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    job: Attribute.Relation<
+      'api::applied-job.applied-job',
+      'manyToOne',
+      'api::job.job'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::applied-job.applied-job',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::applied-job.applied-job',
       'oneToOne',
       'admin::user'
     > &
@@ -823,6 +866,11 @@ export interface ApiJobJob extends Schema.CollectionType {
     location: Attribute.Enumeration<
       ['Bath', 'Birmingham', 'London', 'Durham', 'Winchester']
     >;
+    applied_jobs: Attribute.Relation<
+      'api::job.job',
+      'oneToMany',
+      'api::applied-job.applied-job'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -919,6 +967,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::applied-job.applied-job': ApiAppliedJobAppliedJob;
       'api::category.category': ApiCategoryCategory;
       'api::company.company': ApiCompanyCompany;
       'api::home-sector.home-sector': ApiHomeSectorHomeSector;
